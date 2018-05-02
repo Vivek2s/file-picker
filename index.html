@@ -126,7 +126,7 @@
             concurrency: 4,
             fromSources: ['local_file_system']
         };
-        const client = filestack.init(API_KEY.test);
+        const client = filestack.init(API_KEY.live);
         client.pick(filePickerOptions).then((data)=>{
             if(data.filesUploaded.length > 0){
                 let uploadedfiles = data.filesUploaded;
