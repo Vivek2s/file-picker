@@ -124,7 +124,7 @@
             uploadInBackground: false,
             lang: 'en',
             concurrency: 4,
-            fromSources: ['local_file_system']
+            fromSources: ['webcam']
         };
         const client = filestack.init(API_KEY.live);
         client.pick(filePickerOptions).then((data)=>{
