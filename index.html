@@ -1,10 +1,8 @@
 <script src="https://static.filestackapi.com/v3/filestack.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.1.3/jquery.min.js" crossorigin="anonymous"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"
-    crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js" crossorigin="anonymous"></script>
 
-    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet"
-    crossorigin="anonymous">
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet" crossorigin="anonymous">
 <style>
     .glyphicon {
         margin-right: 5px;
@@ -64,25 +62,33 @@
         margin: 0 0 11px;
     }
 
-    .btn-right{
+    .btn-right {
         float: right;
     }
+
+    .selected{
+        background-color:#ccc;
+    }
+
 </style>
 <div class="container">
-        <div class="well well-sm">
-            <strong>Display</strong>
-            <div class="btn-group">
-                <a href="#" id="list" class="btn btn-default btn-sm"><span class="glyphicon glyphicon-th-list">
+    <div class="well well-sm">
+        <strong>Display</strong>
+        <div class="btn-group">
+            <a href="#" id="list" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-th-list">
                 </span>List</a>
-                 <a href="#" id="grid" class="btn btn-default btn-sm"><span
-                    class="glyphicon glyphicon-th"></span>Grid</a>
-            </div>
-
-            <a onclick="pick()" id="grid" class="btn btn-default btn-sm btn-right"><span
-                class="glyphicon glyphicon-th"></span>Pick</a>
+            <a href="#" id="grid" class="btn btn-default btn-sm">
+                <span class="glyphicon glyphicon-th"></span>Grid</a>
         </div>
-        <div id="products" class="row list-group">
-            <!-- <div class="item  col-xs-4 col-lg-4">
+        <label>Type:</label>
+        <button id="image" class="btn btn-default btn-sm selected" onclick="fileType('image')">Image</button>
+        <button id="any" class="btn btn-default btn-sm" onclick="fileType('any')">Any</button>
+        <a onclick="pick()" id="grid" class="btn btn-default btn-sm btn-right">
+            <span class="glyphicon glyphicon-th"></span>Pick</a>
+    </div>
+    <div id="products" class="row list-group">
+        <!-- <div class="item  col-xs-4 col-lg-4">
                 <div class="thumbnail">
                     <img class="group list-group-image" src="http://placehold.it/400x250/000/fff" alt="" />
                     <div class="caption">
@@ -103,36 +109,44 @@
                     </div>
                 </div>
             </div> -->
-        </div>
     </div>
+</div>
 <script>
 
     const API_KEY = {
         live: 'AjpxIYwIET8W6Y4TqYOjfz',
         test: 'AzwwQ1F6RCWQ6bSTYs1plz'
     };
-
+    let file_type = 'image';
     $(document).ready(function () {
         $('#list').click(function (event) { event.preventDefault(); $('#products .item').addClass('list-group-item'); });
         $('#grid').click(function (event) { event.preventDefault(); $('#products .item').removeClass('list-group-item'); $('#products .item').addClass('grid-group-item'); });
     });
-    
+    function fileType(data) {
+        file_type = data;
+        $('#' + data).addClass('selected');
+        let other = data == 'image' ? 'any' : 'image';
+        $('#' + other).removeClass('selected')
+    }
     function pick() {
         let filePickerOptions = {
             maxFiles: 20,
             minFiles: 1,
-            accept: 'image/*',
+
             uploadInBackground: false,
             lang: 'en',
             concurrency: 4,
             fromSources: ['local_file_system']
         };
+        if (file_type == 'image') {
+            filePickerOptions["accept"] = 'image/*';
+        }
         const client = filestack.init(API_KEY.live);
-        client.pick(filePickerOptions).then((data)=>{
-            if(data.filesUploaded.length > 0){
+        client.pick(filePickerOptions).then((data) => {
+            if (data.filesUploaded.length > 0) {
                 let uploadedfiles = data.filesUploaded;
                 let imgHtml = "";
-                uploadedfiles.forEach((file, index)=>{
+                uploadedfiles.forEach((file, index) => {
                     imgHtml += `
                             <div class="item  col-xs-4 col-lg-4">
                             <div class="thumbnail">
@@ -162,8 +176,10 @@
         });
     }
 
-    function retrieve(){
+    function retrieve() {
         const client = filestack.init('AzwwQ1F6RCWQ6bSTYs1plz');
         client.retrieve("");
     }
+
+
 </script>
