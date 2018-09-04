@@ -135,7 +135,8 @@
 
             uploadInBackground: false,
             lang: 'en',
-            concurrency: 4
+            concurrency: 4,
+            fromSources: ['local_file_system', 'url']
         };
         if (file_type == 'image') {
             filePickerOptions["accept"] = 'image/*';
