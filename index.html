@@ -88,7 +88,7 @@
         <label>Type:</label>
         <button id="image" class="btn btn-default btn-sm selected" onclick="fileType('image')">Image</button>
         <button id="any" class="btn btn-default btn-sm" onclick="fileType('any')">Any</button>
-        <button id="any" class="btn btn-default btn-sm" onclick="openCloudinary()">Cloudinary</button>
+        <button id="cloudinary" class="btn btn-default btn-sm" onclick="fileType('cloudinary')">Cloudinary</button>
         <a onclick="pick()" id="grid" class="btn btn-default btn-sm btn-right">
             <span class="glyphicon glyphicon-th"></span>Pick</a>
     </div>
@@ -131,11 +131,17 @@
     });
     function fileType(data) {
         file_type = data;
-        $('#' + data).addClass('selected');
-        let other = data == 'image' ? 'any' : 'image';
-        $('#' + other).removeClass('selected')
+        // $('#' + data).addClass('selected');
+        // let other = data == 'image' ? 'any' : 'image';
+        $('.selected').removeClass('selected')
+
+        $('#'+data).addClass('selected')
     }
     function pick() {
+        if($('.selected').attr('id') == 'cloudinary'){
+            this.openCloudinary();
+            return;
+        }
         let filePickerOptions = {
             maxFiles: 20,
             minFiles: 1,
